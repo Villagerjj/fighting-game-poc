@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjqrfdiq2jldg"]
+
+[ext_resource type="Script" uid="uid://crblq6v15drud" path="res://assets/modules/3D_characters_center/3d_characters_center.gd" id="1_ms5gq"]
+
+[node name="3D Characters Center" type="Marker3D"]
+script = ExtResource("1_ms5gq")

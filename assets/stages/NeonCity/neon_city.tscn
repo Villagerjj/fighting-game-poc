@@ -1,0 +1,116 @@
+[gd_scene load_steps=12 format=3 uid="uid://cqwewwuq6athw"]
+
+[ext_resource type="Script" uid="uid://cd0d2c62ac5ao" path="res://assets/stages/NeonCity/neon_city.gd" id="1_5qi5w"]
+[ext_resource type="PackedScene" uid="uid://bk2wdxxlwgcjq" path="res://assets/stages/NeonCity/neon_city_background.tscn" id="1_u3hpk"]
+[ext_resource type="Texture2D" uid="uid://drqgm6fio0wvx" path="res://assets/stages/NeonCity/sky.tres" id="1_v4yft"]
+[ext_resource type="PackedScene" uid="uid://huoeaafakm7m" path="res://assets/stages/NeonCity/neon_city_stage.tscn" id="2_v4yft"]
+[ext_resource type="Texture2D" uid="uid://dipuw1r4vdujd" path="res://assets/stages/NeonCity/measuring_background2.png" id="3_5qi5w"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_oiswe"]
+panorama = ExtResource("1_v4yft")
+
+[sub_resource type="Sky" id="Sky_0p2ih"]
+sky_material = SubResource("PanoramaSkyMaterial_oiswe")
+
+[sub_resource type="Environment" id="Environment_cdv6t"]
+background_mode = 2
+sky = SubResource("Sky_0p2ih")
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 2.18
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0, 0.113725, 0.486275, 1)
+fog_light_energy = 0.78
+fog_density = 1.0
+fog_sky_affect = 0.0
+fog_depth_curve = 2.63902
+fog_depth_begin = 120.3
+fog_depth_end = 1223.8
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5qi5w"]
+size = Vector2(2000, 3200)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cdv6t"]
+viewport_path = NodePath("2D Elements")
+
+[sub_resource type="Curve3D" id="Curve3D_po56i"]
+_data = {
+"points": PackedVector3Array(-43, 0, -10, 43, 0, 10, -64.3929, 22, 37.1042, -54, 0, 0, 54, 0, 0, 0, 22, 46, -19, 0, 4, 19, 0, -4, 66, 22, 37),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[node name="NeonCity" type="Node3D"]
+script = ExtResource("1_5qi5w")
+MODE = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0.353556, -0.176778, 0.918558, -0.353556, 0.883882, 0.306189, 0, 8, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_cdv6t")
+
+[node name="2D Elements" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(2560, 1920)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="2D Elements"]
+position = Vector2(1280, 992)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="2D Elements/StaticBody2D"]
+position = Vector2(0, 1568)
+shape = SubResource("RectangleShape2D_5qi5w")
+
+[node name="Sprite2D" type="Sprite2D" parent="2D Elements"]
+position = Vector2(1280, 848)
+texture = ExtResource("3_5qi5w")
+
+[node name="3D Elements" type="Node" parent="."]
+
+[node name="Sprite3D" type="Sprite3D" parent="3D Elements"]
+texture_filter = 0
+texture = SubResource("ViewportTexture_cdv6t")
+
+[node name="NeonCityStage" parent="3D Elements" instance=ExtResource("2_v4yft")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Background2" type="Node3D" parent="3D Elements"]
+transform = Transform3D(-4.35451e-08, -3.8097e-09, -1, -0.0871558, 0.996195, 0, 0.996195, 0.0871558, -4.37114e-08, 0, 0, -156)
+
+[node name="Neon CityScape" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -394, -194, 0)
+
+[node name="Neon CityScape2" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -1074, -194, 0)
+
+[node name="Neon CityScape3" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -394, -194, -633)
+
+[node name="Neon CityScape4" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -1074, -194, -633)
+
+[node name="Neon CityScape8" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -1074, -194, -1239)
+
+[node name="Neon CityScape5" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -394, -194, 607)
+
+[node name="Neon CityScape6" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -1074, -194, 607)
+
+[node name="Neon CityScape7" parent="3D Elements/Background2" instance=ExtResource("1_u3hpk")]
+transform = Transform3D(7.09, 0, 0, 0, 7.09, 0, 0, 0, 7.09, -1074, -194, 1234)
+
+[node name="Path3D" type="Path3D" parent="3D Elements"]
+curve = SubResource("Curve3D_po56i")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16, 0)
+visible = false
+size = Vector3(20, 32, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501984, 0)
+visible = false

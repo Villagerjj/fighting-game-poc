@@ -1,0 +1,35 @@
+[gd_scene load_steps=9 format=3 uid="uid://17uxpce5kcxr"]
+
+[ext_resource type="Script" uid="uid://cewgcdu8m0pua" path="res://scripts/player_controller.gd" id="1_imf1v"]
+[ext_resource type="Script" uid="uid://p4jx010qb7r3" path="res://scripts/states/PlayerMove.gd" id="2_aooxa"]
+[ext_resource type="Script" uid="uid://282w7k716j2p" path="res://scripts/states/PlayerJump.gd" id="3_7t18v"]
+[ext_resource type="Script" uid="uid://cyh8rhkwn5ms8" path="res://scripts/states/PlayerIdle.gd" id="4_b13hp"]
+[ext_resource type="Script" uid="uid://bujto40dwxmbj" path="res://scripts/states/PlayerAir.gd" id="5_62n4q"]
+[ext_resource type="Script" uid="uid://bhgfa6id4xed1" path="res://scripts/states/PlayerAttack.gd" id="6_aooxa"]
+[ext_resource type="Script" uid="uid://4pwhrmm4f8n4" path="res://scripts/states/PlayerCrouch.gd" id="7_7t18v"]
+[ext_resource type="Script" uid="uid://bqdxmisjwnl2q" path="res://scripts/states/PlayerFall.gd" id="8_b13hp"]
+
+[node name="Player Controller" type="Node" node_paths=PackedStringArray("initial_state")]
+script = ExtResource("1_imf1v")
+initial_state = NodePath("PlayerAir")
+
+[node name="PlayerMove" type="Node" parent="."]
+script = ExtResource("2_aooxa")
+
+[node name="PlayerJump" type="Node" parent="."]
+script = ExtResource("3_7t18v")
+
+[node name="PlayerIdle" type="Node" parent="."]
+script = ExtResource("4_b13hp")
+
+[node name="PlayerAir" type="Node" parent="."]
+script = ExtResource("5_62n4q")
+
+[node name="PlayerAttack" type="Node" parent="."]
+script = ExtResource("6_aooxa")
+
+[node name="PlayerCrouch" type="Node" parent="."]
+script = ExtResource("7_7t18v")
+
+[node name="PlayerFall" type="Node" parent="."]
+script = ExtResource("8_b13hp")

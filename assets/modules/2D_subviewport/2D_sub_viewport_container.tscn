@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://58tebnsn5iw1"]
+
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_ymhu2"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="2_hrbwl"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_lon33"]
+
+[sub_resource type="Resource" id="Resource_ymhu2"]
+script = ExtResource("3_lon33")
+duration = 1.0
+transition = 0
+ease = 2
+
+[node name="SubViewport" type="SubViewport"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("1_ymhu2")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera2D" type="Node2D" parent="."]
+script = ExtResource("2_hrbwl")
+tween_resource = SubResource("Resource_ymhu2")
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxx1eopehuffk"]
+
+[ext_resource type="Script" uid="uid://d3wuhx454bghb" path="res://assets/characters/KirbyDebug/character_body_2d.gd" id="1_7gocq"]
+[ext_resource type="SpriteFrames" uid="uid://cr0tch6h0pvtd" path="res://assets/characters/KirbyDebug/KirbyDebugOLD.tres" id="2_7gocq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6djsa"]
+radius = 8.0
+height = 16.0
+
+[node name="Kirby" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_7gocq")
+target_height_meters = 0.5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = ExtResource("2_7gocq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_6djsa")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

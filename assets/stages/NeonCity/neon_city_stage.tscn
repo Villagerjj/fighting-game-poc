@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://huoeaafakm7m"]
+
+[ext_resource type="PackedScene" uid="uid://bra67stu7fa1b" path="res://assets/stages/NeonCity/NeonCityStage.glb" id="1_q8kjl"]
+[ext_resource type="Texture2D" uid="uid://b4e6mc8vo85rk" path="res://assets/stages/NeonCity/NeonCityStage_BuildingTexture1.png" id="2_71dfn"]
+[ext_resource type="Texture2D" uid="uid://bsnm12at005so" path="res://assets/stages/NeonCity/NeonCityStage_BuildingTexture2.png" id="3_d8mu8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gvfev"]
+albedo_texture = ExtResource("2_71dfn")
+emission_enabled = true
+emission_texture = ExtResource("2_71dfn")
+texture_filter = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5eskr"]
+albedo_texture = ExtResource("3_d8mu8")
+emission_enabled = true
+emission_texture = ExtResource("3_d8mu8")
+texture_filter = 2
+
+[node name="NeonCityStage" instance=ExtResource("1_q8kjl")]
+
+[node name="BuildingStage" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_gvfev")
+surface_material_override/1 = SubResource("StandardMaterial3D_5eskr")

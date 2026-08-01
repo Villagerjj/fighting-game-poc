@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=3 uid="uid://buxwdl6jkw8lq"]
+
+[ext_resource type="Script" uid="uid://cj0xnq58ieppx" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://drbc6a8vtici3" path="res://assets/stages/DebugStage/DebugStage.tscn" id="2_5vw27"]
+[ext_resource type="PackedScene" uid="uid://cxx1eopehuffk" path="res://assets/characters/KirbyDebug/KirbyDebug.tscn" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="3_7mycd"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_272bh"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="6_272bh"]
+[ext_resource type="PackedScene" uid="uid://bnvxmjn52fu3a" path="res://assets/characters/3DDebug/3DDebug.tscn" id="7_5vw27"]
+[ext_resource type="Script" uid="uid://dnnpol2aqk2wv" path="res://scripts/camera_3d.gd" id="7_272bh"]
+
+[sub_resource type="Resource" id="Resource_5vw27"]
+script = ExtResource("4_272bh")
+duration = 1.0
+transition = 0
+ease = 2
+
+[node name="Main" type="Node"]
+script = ExtResource("1_h2yge")
+
+[node name="DebugStage" parent="." instance=ExtResource("2_5vw27")]
+
+[node name="PhantomCamera2D" type="Node2D" parent="."]
+top_level = true
+script = ExtResource("3_7mycd")
+follow_mode = 3
+tween_resource = SubResource("Resource_5vw27")
+follow_damping = true
+follow_damping_value = Vector2(0.2, 0.2)
+auto_zoom = true
+auto_zoom_min = 0.5
+auto_zoom_max = 2.0
+auto_zoom_margin = Vector4(32, 64, 32, 32)
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
+
+[node name="GameCam" type="Camera2D" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="GameCam"]
+offset_left = -638.0
+offset_top = -480.0
+offset_right = 642.0
+offset_bottom = 480.0
+
+[node name="SubViewport" type="SubViewport" parent="GameCam/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 960)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="GameCam/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+current = true
+fov = 20.0
+size = 100.0
+script = ExtResource("7_272bh")
+
+[node name="3DCharacters" type="Node3D" parent="GameCam/SubViewportContainer/SubViewport"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="GameCam/SubViewportContainer/SubViewport"]
+visible = false
+
+[node name="PhantomCameraHost" type="Node" parent="GameCam"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("6_272bh")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="2DCharacters" type="Node2D" parent="."]
+
+[node name="3dDebug" parent="2DCharacters" instance=ExtResource("7_5vw27")]
+position = Vector2(538, -443)
+
+[node name="Kirby" parent="2DCharacters" instance=ExtResource("2_h2yge")]
+position = Vector2(540, -398)
+scale = Vector2(2.5, 2.5)

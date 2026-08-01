@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://bk2wdxxlwgcjq"]
+
+[ext_resource type="PackedScene" uid="uid://da6g3nct3aemg" path="res://assets/stages/NeonCity/Neon CityScape.glb" id="1_hn7sd"]
+[ext_resource type="Texture2D" uid="uid://bvrllkk1mumnl" path="res://assets/stages/NeonCity/Neon CityScape_BlueNeon.png" id="2_xywa3"]
+[ext_resource type="Texture2D" uid="uid://cd82owuge12ca" path="res://assets/stages/NeonCity/Neon CityScape_PurpleNeon.png" id="3_bmtuv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6cdj"]
+albedo_texture = ExtResource("2_xywa3")
+emission_enabled = true
+emission_texture = ExtResource("2_xywa3")
+texture_filter = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ayle"]
+albedo_texture = ExtResource("3_bmtuv")
+emission_enabled = true
+emission_texture = ExtResource("3_bmtuv")
+texture_filter = 2
+
+[node name="Neon CityScape" instance=ExtResource("1_hn7sd")]
+
+[node name="City" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_f6cdj")
+surface_material_override/1 = SubResource("StandardMaterial3D_0ayle")

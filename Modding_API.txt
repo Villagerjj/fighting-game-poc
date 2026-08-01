@@ -1,0 +1,271 @@
+my_mod.pck        # The mod file
+	- /root #contains optional info about the mod
+		- /characters
+			- Character1                    # a characterbody node, contains a script with info needed for the character
+				- character1.gd
+				- character1_sprite.png
+				- any other character stuff goes here
+				- character1_portrait.png   # UI image (character select screen)
+			- Character2
+				- character2.gd
+				- character2_sprite.png
+				- character2_portrait.png   # UI image
+		- /stages
+			- Stage1                        # can be whatever, as long as there is stage collisions. 
+				- stage1.tscn
+				- stage1_assets/
+				- stage1_thumbnail.png      # UI image (stage select screen)
+			- Stage2
+				- stage2.tscn
+				- stage2_assets/
+				- stage2_thumbnail.png      # UI image
+		- /ui  # Optional folder for global UI assets
+			- mod_icon.png   # Mod-specific icon, if needed
+
+
+	_          _                 _   _               ____        _           
+   / \   _ __ (_)_ __ ___   __ _| |_(_) ___  _ __   |  _ \ _   _| | ___  ___ 
+  / _ \ | '_ \| | '_ ` _ \ / _` | __| |/ _ \| '_ \  | |_) | | | | |/ _ \/ __|
+ / ___ \| | | | | | | | | | (_| | |_| | (_) | | | | |  _ <| |_| | |  __/\__ \
+/_/   \_\_| |_|_|_| |_| |_|\__,_|\__|_|\___/|_| |_| |_| \_\\__,_|_|\___||___/
+
+every attack needs to have startup, active, and recovery frames.
+
+
+PlayerMove
+PlayerJump
+PlayerIdle
+PlayerAir
+PlayerAttack
+PlayerAttackUp
+PlayerAttackDown
+PlayerAttackSide
+PlayerSpecial
+PlayerSpecialUp
+PlayerSpecialDown
+PlayerSpecialSide
+
+
+animations:
+
+moving - left and right
+idle - left and right
+knockdown - character gets knocked over - left and right
+getup - character stands up from their knockdown pose - left and right
+initial leap - the animation for leaping up off of the ground - left and right
+jumping - while still moving up from a jump - left and right
+air jump - when you jump midair - left and right
+idle to crouching - when you switch from idle to crouch
+crouching - when you hold down on solid ground - left and right
+falling - when you are falling - left and right
+landing - when you land on the ground - left and right
+diving - holding down while in air - left and right
+attack - left and right
+attack miss - left and right
+special attack - left and right
+special attack miss - left and right
+tilt attack - all 4 directions
+tilt attack miss - all 4 directions
+special tilt attack - all 4 directions
+special tilt attack miss - all 4 directions
+finisher - the full cutscene animation
+finisher miss - when the character misses their apponent (might remove this)
+taunt - a taunt animation :)
+
+Core Movement:
+	
+Move (Left/Right): Character movement in both directions.
+Idle (Left/Right): Standing still, default pose in both directions.
+Jump Start: Initial leap from the ground.
+Jump (Left/Right): Mid-air motion while ascending or holding a direction.
+Air Jump: Mid-air second jump.
+Falling: Character falling after reaching jump apex.
+Landing: After falling, when character lands on the ground.
+Crouch: Transition from standing to crouching.
+Crouching: Holding down while on the ground.
+Dive: While holding down in mid-air.
+
+Knockdown & Recovery:
+	
+Knockdown: Character gets knocked over.
+Get Up: Character stands up from a knockdown.
+
+Attack States:
+	
+Basic Attack (Left/Right): Standard attack.
+Basic Attack Miss: Missed attack animation (use sparingly).
+Special Attack (Left/Right): More powerful or unique attack.
+Special Attack Miss: Animation for missing the special attack.
+Tilt Attack (Up/Down/Left/Right): Directional attacks.
+Tilt Attack Miss: Missed tilt attacks (optional, can simplify).
+
+Finisher:
+	
+Finisher: Full cutscene ultimate attack animation.
+Finisher Miss: (Optional) Can be removed if unnecessary.
+
+Personality:
+	
+Taunt: Character's taunt animation.
+
+  ____            _             _     
+ / ___|___  _ __ | |_ _ __ ___ | |___ 
+| |   / _ \| '_ \| __| '__/ _ \| / __|
+| |__| (_) | | | | |_| | | (_) | \__ \
+ \____\___/|_| |_|\__|_|  \___/|_|___/
+
+Standard Attacks - Fastest:
+	Xbox - A
+	PC - X
+
+Tilt and Dash Attacks:
+	Xbox - Direction(<^v>) + Standard(A)
+	PC - Direction(Arrow keys) + Standard(X)
+
+Smash Attacks - have launching power:
+	Xbox - Direction(<^v>) + B
+	PC - Direction(Arrow keys) + C
+
+Move:
+	Xbox - Direction(<^v>)
+	PC - Direction(Arrow keys)
+
+Jump:
+	Xbox - Up(^), X, Y
+	PC - Up(^ arrow key), Z, Space
+
+
+Control	Action
+D-pad	Movement (left/right), jumping (up), crouching (down)
+A button	Basic Attack (light/medium, depending on hold)
+B button	Special Attack (character-specific specials, directional-based)
+Start	Pause/Menu
+Select	Taunt or Character-Specific Extra Action (like blocking or parrying)
+
+
+I will allow air jumping, because its cool :)
+
+
+
+
+controller backup:
+	
+	extends Node
+
+var initial_state : State
+
+# this is a base/template for all player controllers
+var states : Dictionary = {}
+var current_state : State
+
+var Character : CharacterBody2D
+var controller_id := 0
+
+var move_speed : float
+var air_jumps_total : int 
+var air_jumps_current : int 
+
+var jump_height : float 
+var jump_time_to_peak : float 
+var jump_time_to_descent : float 
+
+var jump_velocity : float 
+var jump_gravity : float 
+var fall_gravity : float
+
+func _ready() -> void:
+	for child in get_children():
+		if child is State:
+			states[child.name.to_lower()] = child
+	
+	if initial_state:
+		initial_state.enter()
+		current_state = initial_state
+	
+	while Character == null:
+		await SignalBus.character_assigned
+
+	move_speed = Character.move_speed
+	air_jumps_total = Character.air_jumps_total
+	air_jumps_current = air_jumps_total
+
+	jump_height = Character.jump_height
+	jump_time_to_peak = Character.jump_time_to_peak
+	jump_time_to_descent = Character.jump_time_to_descent
+
+	jump_velocity = ((2.0 * jump_height) / jump_time_to_peak) * -1.0
+	jump_gravity = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
+	fall_gravity = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1.0
+
+func _process(delta: float) -> void:
+	if current_state:
+		current_state.update(delta)
+			
+
+func _physics_process(delta):
+	if current_state:
+		current_state.physics_update(delta)
+		
+	Character.velocity.y += get_gravity() * delta
+	Character.velocity.x = get_horizontal_velocity() * move_speed
+	
+	if Input.is_action_just_pressed("jump_"+str(controller_id)):
+		if Character.is_on_floor():
+			jump()
+		if air_jumps_current > 0 and not Character.is_on_floor():
+			air_jump()
+			
+	if Input.is_action_just_pressed("down_"+str(controller_id)):
+		if Character.is_on_floor():
+			Character.crouch_anim()
+		else:
+			Character.down_anim()
+
+	var direction = Input.get_axis("left_"+str(controller_id), "right_"+str(controller_id))
+	if direction:
+		Character.velocity.x = direction * move_speed
+		Character.move_anim(direction)
+	else:
+		Character.velocity.x = move_toward(Character.velocity.x, 0, move_speed)
+		Character.idle_anim()
+
+	Character.move_and_slide()
+
+func get_gravity() -> float:
+	return jump_gravity if Character.velocity.y < 0.0 else fall_gravity
+
+func jump():
+	air_jumps_current = air_jumps_total
+	Character.velocity.y = jump_velocity
+	Character.jump_anim()
+	
+func air_jump():
+	air_jumps_current -= 1
+	Character.velocity.y = jump_velocity
+	Character.air_jump_anim()
+
+func get_horizontal_velocity() -> float:
+	var horizontal := 0.0
+	
+	if Input.is_action_pressed("left_"+str(controller_id)):
+		horizontal -= 1.0
+	if Input.is_action_pressed("right_"+str(controller_id)):
+		horizontal += 1.0
+	
+	return horizontal
+
+func on_child_transition(state, new_state_name):
+	if state != current_state:
+		return
+	
+	var new_state = states.get(new_state_name.to_lower())
+	if !new_state:
+		return
+	
+	if current_state:
+		current_state.exit()
+		
+	new_state.enter()
+	
+	current_state = new_state
+	
